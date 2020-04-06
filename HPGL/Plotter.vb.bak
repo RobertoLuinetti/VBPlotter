@@ -18,10 +18,8 @@
     Public PenGreen As New Pen(Color.Green, 0)
     Public PenYellow As New Pen(Color.Yellow, 0)
     Public PenBlue As New Pen(Color.Blue, 0)
-    Public PenDarkBlue As New Pen(Color.DarkBlue, 0)
     Public PenLightGreen As New Pen(Color.LightGreen, 0)
-    Public PenLightWhite As New Pen(Color.WhiteSmoke, 0)
-    Public PenCyan As New Pen(Color.Cyan, 0)
+    Public PenLightWhite As New Pen(Color.White, 0)
 
     Public Sub SetDisplayPhysicalArea(VpicGraph As PictureBox, XWAreaPix As Single, YHAreaPix As Single, X0pix As Single, Y0pix As Single, XWDisplayPix As Single, YHDisplayPix As Single)
         VpicGraph.Width = XWAreaPix
@@ -75,15 +73,11 @@
         End If
     End Sub
 
-    Public Sub DrawLogicRect(gr As Graphics, C As Color, RX0 As Single, RY0 As Single, Xw As Single, Yh As Single)
-        Dim myPen As New Pen(C)
-        Dim mySolidBrush As New SolidBrush(C)
+    Public Sub DrawLogicRect(gr As Graphics, RX0 As Single, RY0 As Single, Xw As Single, Yh As Single)
+        Dim myPen As New Pen(Color.DarkBlue)
+        Dim mySolidBrush As New SolidBrush(Color.DarkBlue)
         gr.DrawRectangle(myPen, PX0 - Xmin / Xratio + RX0 / Xratio, PY0 + Ymin / Yratio + RY0 / Yratio * -1 - Yh / Yratio, Xw / Xratio, Yh / Yratio)
         gr.FillRectangle(mySolidBrush, PX0 - Xmin / Xratio + RX0 / Xratio, PY0 + Ymin / Yratio + RY0 / Yratio * -1 - Yh / Yratio, Xw / Xratio, Yh / Yratio)
-    End Sub
-
-    Public Sub DrawLogicPicture(gr As Graphics, BM As Bitmap, RX0 As Single, RY0 As Single)
-        gr.DrawImage(BM, PX0 - Xmin / Xratio + RX0 / Xratio - Convert.ToSingle(BM.Width / 2), PY0 + Ymin / Yratio + RY0 / Yratio * -1 - Convert.ToSingle(BM.Height / 2))
     End Sub
 
     Public Sub Plot(gr As Graphics, C As Color, x1 As Single, y1 As Single)
@@ -96,34 +90,16 @@
         End If
     End Sub
 
-    Public Sub Label(gr As Graphics, T As String, Font As String, Size As Single, C As Color, RX0 As Single, RY0 As Single)
-        Dim fnt As New Font(Font, Size, FontStyle.Regular)
-        Dim brushy As Brush
-        brushy = New Drawing.SolidBrush(C)
-        gr.DrawString(T, fnt, brushy, PX0 - Xmin / Xratio + RX0 / Xratio, PY0 + Ymin / Yratio + RY0 / Yratio * -1)
-    End Sub
-
-    Public Sub GetPhysicalCoords(ByVal XL As Single, ByVal YL As Single, ByRef XP As Single, ByRef YP As Single)
-        XP = PX0 - Xmin / Xratio + XL / Xratio
-        YP = PY0 + Ymin / Yratio + YL / Yratio * -1
-    End Sub
-
     Public Sub Axes(gr As Graphics, P As Pen, XCenter As Single, YCenter As Single, Optional Xtick As Single = 0, Optional Ytick As Single = 0)
         Draw(gr, P, Xmin, YCenter, Xmax, YCenter)
         Draw(gr, P, XCenter, Ymin, XCenter, Ymax)
         If Xtick <> 0 Then
-            For Xn = XCenter To Xmax Step Xtick
-                Draw(gr, P, Xn, -Yratio * 3 + YCenter, Xn, Yratio * 3 + YCenter)
-            Next Xn
-            For Xn = XCenter To Xmin Step -Xtick
+            For Xn = Xmin To Xmax Step Xtick
                 Draw(gr, P, Xn, -Yratio * 3 + YCenter, Xn, Yratio * 3 + YCenter)
             Next Xn
         End If
         If Ytick <> 0 Then
-            For Yn = YCenter To Ymax Step Ytick
-                Draw(gr, P, -Xratio * 3 + XCenter, Yn, Xratio * 3 + XCenter, Yn)
-            Next Yn
-            For Yn = YCenter To Ymin Step -Ytick
+            For Yn = Ymin To Ymax Step Ytick
                 Draw(gr, P, -Xratio * 3 + XCenter, Yn, Xratio * 3 + XCenter, Yn)
             Next Yn
         End If
@@ -159,11 +135,11 @@
         Dim fore_brush As Brush = Brushes.White
         Dim text_size = gr.MeasureString(Title, fntTitolo)
         Dim Xt = CInt(((PXSpan - text_size.Width) / 2) + PX0)
-        Dim Yt = Ywide - PY0R + text_size.Height * 1.2
+        Dim Yt = Ywide - PY0R + text_size.Height
         gr.DrawString(Title, fntTitolo, fore_brush, Xt, Yt)
     End Sub
 
-    Public Sub XTickLabel(gr As Graphics, XCenter As Single, TiskStep As Single, Font As String, Size As Single)
+    Public Sub XTickLabel(gr As Graphics, TiskStep As Single, Font As String, Size As Single)
         Dim Yt As Single
         Dim fntTitolo As New Font(Font, Size, FontStyle.Regular)
         Dim fore_brush As Brush = Brushes.White
@@ -171,19 +147,10 @@
         Dim sf As New StringFormat
         sf.LineAlignment = StringAlignment.Near
         sf.Alignment = StringAlignment.Center
-        For Xn = XCenter To Xmax Step TiskStep
+        For Xn = Xmin To Xmax Step TiskStep
             text_size = gr.MeasureString(CStr(Xn), fntTitolo)
             Yt = Ywide - PY0R + text_size.Height / 2
-            If PX0 - Xmin / Xratio + Xn / Xratio >= PX0 Then
-                gr.DrawString(CStr(Xn), fntTitolo, fore_brush, PX0 - Xmin / Xratio + Xn / Xratio, Yt, sf)
-            End If
-        Next Xn
-        For Xn = XCenter To Xmin Step -TiskStep
-            text_size = gr.MeasureString(CStr(Xn), fntTitolo)
-            Yt = Ywide - PY0R + text_size.Height / 2
-            If PX0 - Xmin / Xratio + Xn / Xratio >= PX0 Then
-                gr.DrawString(CStr(Xn), fntTitolo, fore_brush, PX0 - Xmin / Xratio + Xn / Xratio, Yt, sf)
-            End If
+            gr.DrawString(CStr(Xn), fntTitolo, fore_brush, PX0 - Xmin / Xratio + Xn / Xratio, Yt, sf)
         Next Xn
     End Sub
 
@@ -199,25 +166,16 @@
         gr.ResetTransform()
     End Sub
 
-    Public Sub YTickLabel(gr As Graphics, Ycenter As Single, TiskStep As Single, Font As String, Size As Single)
+    Public Sub YTickLabel(gr As Graphics, TiskStep As Single, Font As String, Size As Single)
         Dim fntTitolo As New Font(Font, Size, FontStyle.Regular)
         Dim fore_brush As Brush = Brushes.White
         Dim text_size As SizeF
         Dim sf As New StringFormat
         sf.LineAlignment = StringAlignment.Center
         sf.Alignment = StringAlignment.Near
-        For Yn = Ycenter To Ymax Step TiskStep
+        For Yn = Ymin To Ymax Step TiskStep
             text_size = gr.MeasureString(CStr(Yn), fntTitolo)
-            If PY0 + Ymin / Yratio + Yn / Yratio * -1 <= PY0 Then
-                gr.DrawString(CStr(Yn), fntTitolo, fore_brush, PX0 + PXSpan, PY0 + Ymin / Yratio + Yn / Yratio * -1, sf)
-            End If
-        Next Yn
-        For Yn = Ycenter To Ymin Step -TiskStep
-            text_size = gr.MeasureString(CStr(Yn), fntTitolo)
-            If PY0 + Ymin / Yratio + Yn / Yratio * -1 <= PY0 Then
-                gr.DrawString(CStr(Yn), fntTitolo, fore_brush, PX0 + PXSpan, PY0 + Ymin / Yratio + Yn / Yratio * -1, sf)
-            End If
+            gr.DrawString(CStr(Yn), fntTitolo, fore_brush, PX0 + PXSpan, PY0 + Ymin / Yratio + Yn / Yratio * -1, sf)
         Next Yn
     End Sub
 End Module
-
