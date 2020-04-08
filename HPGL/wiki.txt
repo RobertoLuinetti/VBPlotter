@@ -1,0 +1,156 @@
+This library is written in Visual Studio 2019 VB.net, you can include this library in your project to draw using logical coordinates instead of physical coordinates .
+
+The commands available with VBPlotter are partly inspired by graphical commands used in HP's Rocky Mountain BASIC language, specialized in measuring instruments management via the IEEE 488 interface bus (HP-IB), distribution of RMB is no longer available.
+
+Graphic commands available in RMB allowed to create scientific graphs quickly without having to get lost in complicated topographical transformations to manage graphic display, remember that in VB.net the axes origin in a PictureBox is located at the top left and all commands to draw points and lines they use physical coordinates thus complicating the representation of a graph
+
+Here a sample picture generated with VBPlotter lib:
+
+![Graph example](https://user-images.githubusercontent.com/63187365/78716484-419d5b00-791f-11ea-8a6b-cbf873e5aeb3.png)
+
+Below the diagram of coordinate system of the library, note that the origin of the axes of the PictureBox Area is positioned bottom/left instead of top/left as expected by the PictureBox object, in this way assignment of origin is more easy as well as assignment of logical scale.
+
+![image](https://user-images.githubusercontent.com/63187365/78826317-986b6900-79e1-11ea-9535-ebff36b8dc8d.png)
+
+To use library you first need to include a PictureBox in your form:
+
+![Form Setup](https://user-images.githubusercontent.com/63187365/78718739-1f0d4100-7923-11ea-9cec-5e9e75c81417.png)
+
+Then use the commad _**SetDisplayPhysicalArea**_ to define:
+
+* physical size of PictureBox 
+* physical position of bootom/left corner of plotter area into PictureBox
+* physical dimension of plotter area 
+ 
+_**SetDisplayPhysicalArea**_(VpicGraph As PictureBox, XWAreaPix As Single, YHAreaPix As Single, X0pix As Single, Y0pix As 
+Single, XWDisplayPix As Single, YHDisplayPix As Single) 
+
+* _**VpicGraph**_ name of used PictureBox 
+* _**XWAreaPix**_ Horizontal physical dimension of PictureBox (number of pixel) 
+* _**YHAreaPix**_ Vertical physical dimension of PictureBox (number of pixel) 
+* _**X0pix**_ Physical position of left/bottom corner of plotter area 
+* _**Y0pix**_ Physical position of left/bottom corner of plotter area
+* _**XWDisplayPix**_ Horizontal physical dimension of plotter area (number of pixel)
+* _**YHDisplayPix**_ Vertical physical dimension of plotter area (number of pixel)
+
+After defined physical area you have to define logical coordinate using scale command:
+
+**SetScale**(XL As Single, XR As Single, YB As Single, YT As Single) 
+* _**XL**_ (XLeft) Minimum logical value of X 
+* _**XR**_ (XRight) Maximum logical value of X
+* _**YB**_ (YBottom) Minimum logical value of Y
+* _**YT**_ (YTop) Maximum logical value of Y
+
+To bind plotter library to PictureBox follow these step:
+
+![image](https://user-images.githubusercontent.com/63187365/78828365-e46bdd00-79e4-11ea-84a7-8b6bf21c04ad.png)
+
+with Frame command you can draw a frame around the display area:
+
+_**Frame**_(gr As Graphics, P As Pen)
+* _**gr**_ Pointer to display
+* _**P**_ Defined color Pen
+
+You can draw axes passing through a defined origin and specify also a minor mark reference
+
+_**Axes**_(gr As Graphics, P As Pen, XCenter As Single, YCenter As Single, Optional Xmark As Single = 0, Optional Ymark As Single = 0)
+* _**gr**_ Pointer to display
+* _**P**_ Defined color Pen
+* _**XCenter**_ Origin for X axis
+* _**YCenter**_ Origin for Y axis
+* _**Optional Xmark**_ Minor X mark spacing
+* _**Optional Ymark**_ Minor Y mark spacing
+
+To better read graph we can use GRID command to draw X and Y reference lines
+
+_**Grid**_(gr As Graphics, P As Pen, XCenter As Single, YCenter As Single, Xstep As Single, Ystep As Single)
+* _**gr**_ Pointer to display
+* _**P**_ Defined color Pen
+* _**XCenter**_ Origin for X axis
+* _**YCenter**_ Origin for Y axis
+* _**Xstep**_ Distance between two X grid lines
+* _**Ystep**_ Distance between two Y grid lines
+
+A title can be easily added to graph with Graph Title command
+
+_**GraphTitle**_(gr As Graphics, Title As String, Font As String, Size As Single)
+* _**gr**_ Pointer to display
+* _**Title**_ Title of the graph
+* _**Font**_ Font for title
+* _**Size**_ Size of title
+
+same way for X axis title
+
+_**XTitle**_(gr As Graphics, Title As String, Font As String, Size As Single)
+* _**gr**_ Pointer to display
+* _**Title**_ Title of the graph
+* _**Font**_ Font for title
+* _**Size**_ Size of title
+
+same way for Y axis title
+
+_**YTitle**_(gr As Graphics, Title As String, Font As String, Size As Single)
+* _**gr**_ Pointer to display
+* _**Title**_ Title of the graph
+* _**Font**_ Font for title
+* _**Size**_ Size of title
+
+a number near vertical grid on X axis can be placed with command XmarkLabel :
+
+_**XmarkLabel**_(gr As Graphics, XCenter As Single, MarkStep As Single, Font As String, Size As Single)
+* _**gr**_ Pointer to display
+* _**XCenter**_ Origin of Xgrid 
+* _**MarkStep**_ logical distance between two vertical lines
+* _**Font**_ Font for title
+* _**Size**_ Size of title
+
+a number near horizontal grid on Y axis can be placed with command YmarkLabel :
+
+_**YmarkLabel**_(gr As Graphics, Ycenter As Single, MarkStep As Single, Font As String, Size As Single)
+* _**gr**_ Pointer to display
+* _**YCenter**_ Origin of Ygrid 
+* _**MarkStep**_ logical distance between two horizontal lines
+* _**Font**_ Font for title
+* _**Size**_ Size of title
+
+now all is ready to draw lines or plot point with draw and plot command:
+
+_**Draw**_(gr As Graphics, P As Pen, x1 As Single, y1 As Single, x2 As Single, y2 As Single)
+* _**gr**_ Pointer to display
+* _**P**_ Defined color Pen
+* _**X1**_ X1 point
+* _**Y1**_ Y1 point
+* _**X2**_ X2 point
+* _**Y2**_ Y2 point
+
+_**Plot**_(gr As Graphics, C As Color, x1 As Single, y1 As Single)
+* _**gr**_ Pointer to display
+* _**C**_ Defined color
+* _**X1**_ X1 point
+* _**Y1**_ Y1 point
+
+Plot and Draw command include a routine to crop value outside the logical area
+
+DrawLogicRect allow you to draw rectangle in logical coordinates:
+
+_**DrawLogicRect**_(gr As Graphics, C As Color, RX0 As Single, RY0 As Single, Xw As Single, Yh As Single)
+* _**gr**_ Pointer to display
+* _**C**_ Defined color
+* _**RX0**_ X point of left bottom logical postion of rectangle
+* _**RY0**_ Y point of left bottom logical postion of rectangle
+
+GetPhysicalCoords return physical coordinates of specified logical coordinates:
+
+_**GetPhysicalCoords**_(ByVal XL As Single, ByVal YL As Single, ByRef XP As Single, ByRef YP As Single)
+* _**XL**_ X point in logical domain
+* _**YL**_ Y point in logical domain
+* _**XP**_ X point in physical domain
+* _**YP**_ Y point in physical domain
+
+
+
+
+
+
+
+

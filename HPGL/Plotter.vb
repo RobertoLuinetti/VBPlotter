@@ -108,22 +108,22 @@
         YP = PY0 + Ymin / Yratio + YL / Yratio * -1
     End Sub
 
-    Public Sub Axes(gr As Graphics, P As Pen, XCenter As Single, YCenter As Single, Optional Xtick As Single = 0, Optional Ytick As Single = 0)
+    Public Sub Axes(gr As Graphics, P As Pen, XCenter As Single, YCenter As Single, Optional Xmark As Single = 0, Optional Ymark As Single = 0)
         Draw(gr, P, Xmin, YCenter, Xmax, YCenter)
         Draw(gr, P, XCenter, Ymin, XCenter, Ymax)
-        If Xtick <> 0 Then
-            For Xn = XCenter To Xmax Step Xtick
+        If Xmark <> 0 Then
+            For Xn = XCenter To Xmax Step Xmark
                 Draw(gr, P, Xn, -Yratio * 3 + YCenter, Xn, Yratio * 3 + YCenter)
             Next Xn
-            For Xn = XCenter To Xmin Step -Xtick
+            For Xn = XCenter To Xmin Step -Xmark
                 Draw(gr, P, Xn, -Yratio * 3 + YCenter, Xn, Yratio * 3 + YCenter)
             Next Xn
         End If
-        If Ytick <> 0 Then
-            For Yn = YCenter To Ymax Step Ytick
+        If Ymark <> 0 Then
+            For Yn = YCenter To Ymax Step Ymark
                 Draw(gr, P, -Xratio * 3 + XCenter, Yn, Xratio * 3 + XCenter, Yn)
             Next Yn
-            For Yn = YCenter To Ymin Step -Ytick
+            For Yn = YCenter To Ymin Step -Ymark
                 Draw(gr, P, -Xratio * 3 + XCenter, Yn, Xratio * 3 + XCenter, Yn)
             Next Yn
         End If
@@ -163,7 +163,7 @@
         gr.DrawString(Title, fntTitolo, fore_brush, Xt, Yt)
     End Sub
 
-    Public Sub XTickLabel(gr As Graphics, XCenter As Single, TiskStep As Single, Font As String, Size As Single)
+    Public Sub XmarkLabel(gr As Graphics, XCenter As Single, MarkStep As Single, Font As String, Size As Single)
         Dim Yt As Single
         Dim fntTitolo As New Font(Font, Size, FontStyle.Regular)
         Dim fore_brush As Brush = Brushes.White
@@ -171,14 +171,14 @@
         Dim sf As New StringFormat
         sf.LineAlignment = StringAlignment.Near
         sf.Alignment = StringAlignment.Center
-        For Xn = XCenter To Xmax Step TiskStep
+        For Xn = XCenter To Xmax Step MarkStep
             text_size = gr.MeasureString(CStr(Xn), fntTitolo)
             Yt = Ywide - PY0R + text_size.Height / 2
             If PX0 - Xmin / Xratio + Xn / Xratio >= PX0 Then
                 gr.DrawString(CStr(Xn), fntTitolo, fore_brush, PX0 - Xmin / Xratio + Xn / Xratio, Yt, sf)
             End If
         Next Xn
-        For Xn = XCenter To Xmin Step -TiskStep
+        For Xn = XCenter To Xmin Step -MarkStep
             text_size = gr.MeasureString(CStr(Xn), fntTitolo)
             Yt = Ywide - PY0R + text_size.Height / 2
             If PX0 - Xmin / Xratio + Xn / Xratio >= PX0 Then
@@ -199,20 +199,20 @@
         gr.ResetTransform()
     End Sub
 
-    Public Sub YTickLabel(gr As Graphics, Ycenter As Single, TiskStep As Single, Font As String, Size As Single)
+    Public Sub YmarkLabel(gr As Graphics, Ycenter As Single, MarkStep As Single, Font As String, Size As Single)
         Dim fntTitolo As New Font(Font, Size, FontStyle.Regular)
         Dim fore_brush As Brush = Brushes.White
         Dim text_size As SizeF
         Dim sf As New StringFormat
         sf.LineAlignment = StringAlignment.Center
         sf.Alignment = StringAlignment.Near
-        For Yn = Ycenter To Ymax Step TiskStep
+        For Yn = Ycenter To Ymax Step MarkStep
             text_size = gr.MeasureString(CStr(Yn), fntTitolo)
             If PY0 + Ymin / Yratio + Yn / Yratio * -1 <= PY0 Then
                 gr.DrawString(CStr(Yn), fntTitolo, fore_brush, PX0 + PXSpan, PY0 + Ymin / Yratio + Yn / Yratio * -1, sf)
             End If
         Next Yn
-        For Yn = Ycenter To Ymin Step -TiskStep
+        For Yn = Ycenter To Ymin Step -MarkStep
             text_size = gr.MeasureString(CStr(Yn), fntTitolo)
             If PY0 + Ymin / Yratio + Yn / Yratio * -1 <= PY0 Then
                 gr.DrawString(CStr(Yn), fntTitolo, fore_brush, PX0 + PXSpan, PY0 + Ymin / Yratio + Yn / Yratio * -1, sf)

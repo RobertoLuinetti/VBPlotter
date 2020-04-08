@@ -14,8 +14,8 @@
         GraphTitle(gr, "VB.net Plotter by Roberto Luinetti", "Arbutus Slab", 24) 'Set Graph title
         XTitle(gr, "ascisse 10°/DIV", "Verdana", 10)                             'Set X axis title
         YTitle(gr, "ordinate 10/DIV", "Verdana", 10)                             'Set Y axis title
-        XTickLabel(gr, 30, 30, "Verdana", 7)                                     'Set numeric scale on X axis
-        YTickLabel(gr, 20, 10, "Verdana", 7)                                     'Set numeric scale on Y axis
+        XmarkLabel(gr, 30, 30, "Verdana", 7)                                     'Set numeric scale on X axis
+        YmarkLabel(gr, 20, 10, "Verdana", 7)                                     'Set numeric scale on Y axis
 
         Draw(gr, PenRed, 0, 0, 200, 60)     'x2,y2 are outside of plotter area, segment will be truncate to out of horizontal plotter border
         Draw(gr, PenRed, 0, 0, 200, -60)    'x2,y2 are outside of plotter area, segment will be truncate to out of horizontal plotter border
