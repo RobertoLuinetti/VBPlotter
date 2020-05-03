@@ -60,7 +60,7 @@
                 x2 = Xmax
             End If
             If x2 < Xmin Then
-                y2 = ((y2 - y1) / (x2 - x1)) * (Xmax - x1) + y1
+                y2 = ((y2 - y1) / (x2 - x1)) * (Xmin - x1) + y1
                 x2 = Xmin
             End If
             If y2 > Ymax Then
@@ -71,6 +71,25 @@
                 x2 = ((x2 - x1) * (Ymin - y1)) / (y2 - y1) + x1
                 y2 = Ymin
             End If
+
+            If x1 > Xmax Then
+                y1 = ((y1 - y2) / (x1 - x2)) * (Xmax - x2) + y2
+                x1 = Xmax
+            End If
+            If x1 < Xmin Then
+                y1 = ((y1 - y2) / (x1 - x2)) * (Xmin - x2) + y2
+                x1 = Xmin
+            End If
+            If y1 > Ymax Then
+                x1 = ((x1 - x2) * (Ymax - y2)) / (y1 - y2) + x2
+                y1 = Ymax
+            End If
+            If y1 < Ymin Then
+                x1 = ((x1 - x2) * (Ymin - y2)) / (y1 - y2) + x2
+                y1 = Ymin
+            End If
+
+
             gr.DrawLine(P, PX0 - Xmin / Xratio + x1 / Xratio, PY0 + Ymin / Yratio + y1 / Yratio * -1, PX0 - Xmin / Xratio + x2 / Xratio, PY0 + Ymin / Yratio + y2 / Yratio * -1)
         End If
     End Sub
