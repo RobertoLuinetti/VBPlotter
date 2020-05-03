@@ -22,10 +22,20 @@
         Draw(gr, PenRed, 0, 0, -200, 60)    'x2,y2 are outside of plotter area, segment will be truncate to out of horizontal plotter border
         Draw(gr, PenRed, 0, 0, -200, -60)   'x2,y2 are outside of plotter area, segment will be truncate to out of horizontal plotter border
 
+        Draw(gr, PenYellow, 200, 65, 0, 0)  'same but from outside to inside
+        Draw(gr, PenYellow, 200, -65, 0, 0)
+        Draw(gr, PenYellow, -200, 65, 0, 0)
+        Draw(gr, PenYellow, -200, -65, 0, 0)
+
         Draw(gr, PenBlue, 0, 0, 200, 40)    'x2,y2 are outside of plotter area, segment will be truncate to out of vertical plotter border
         Draw(gr, PenBlue, 0, 0, 200, -40)   'x2,y2 are outside of plotter area, segment will be truncate to out of vertical plotter border
         Draw(gr, PenBlue, 0, 0, -200, 40)   'x2,y2 are outside of plotter area, segment will be truncate to out of vertical plotter border
         Draw(gr, PenBlue, 0, 0, -200, -40)  'x2,y2 are outside of plotter area, segment will be truncate to out of vertical plotter border
+
+        Draw(gr, PenGreen, 200, 35, 0, 0)   'same but from outside to inside
+        Draw(gr, PenGreen, 200, -35, 0, 0)
+        Draw(gr, PenGreen, -200, 35, 0, 0)
+        Draw(gr, PenGreen, -200, -35, 0, 0)
 
         Dim X, Ys, Yc, Ys1, Xold, Yold As Single
         Dim pi As Single = 3.14159265
